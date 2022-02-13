@@ -16,7 +16,7 @@ steps:
       ScriptType: "InlineScript"
       Inline: |
         New-AzSubscriptionDeployment `
-          -Name $Deployment `
-          -Location $Location `
+          -Name MissionCtlDeploy `
+          -Location WestEurop `
           -TemplateFile main.bicep `
           -dnsDomain $(DOMAIN)
