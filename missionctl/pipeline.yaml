@@ -1,0 +1,22 @@
+trigger:
+  - hypermaster
+
+variables:
+  - group: prod
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: AzurePowerShell@5
+    inputs:
+      azureSubscription: "Azure Cloud Connection"
+      azurePowerShellVersion: "LatestVersion"
+      pwsh: true
+      ScriptType: "InlineScript"
+      Inline: |
+        New-AzSubscriptionDeployment `
+          -Name $Deployment `
+          -Location $Location `
+          -TemplateFile main.bicep `
+          -dnsDomain $(DOMAIN)
