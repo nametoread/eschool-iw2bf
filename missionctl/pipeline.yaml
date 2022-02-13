@@ -8,7 +8,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - checkout: self
   - task: AzureCLI@2
     inputs:
       azureSubscription: "Azure Cloud Connection"
@@ -17,5 +16,5 @@ steps:
       inlineScript: |
         az deployment sub create \
           --location WestEurope \
-          --template-file ./main.bicep \
+          --template-file ./missionctl/main.bicep \
           --parameters dnsDomain=$(DOMAIN)
