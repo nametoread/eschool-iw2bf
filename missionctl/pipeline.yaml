@@ -8,15 +8,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - task: AzurePowerShell@5
+  - task: AzureCLI@2
     inputs:
       azureSubscription: "Azure Cloud Connection"
-      azurePowerShellVersion: "LatestVersion"
-      pwsh: true
-      ScriptType: "InlineScript"
-      Inline: |
-        New-AzSubscriptionDeployment `
-          -Name MissionCtlDeploy `
-          -Location WestEurop `
-          -TemplateFile main.bicep `
-          -dnsDomain $(DOMAIN)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment sub create \
+          --location WestEurope \
+          --template-file main.bicep \
+          --parameters dnsDomain=$(DOMAIN)
