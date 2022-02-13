@@ -16,5 +16,5 @@ steps:
       inlineScript: |
         az deployment sub create \
           --location WestEurope \
-          --template-file main.bicep \
+          --template-file ./main.bicep \
           --parameters dnsDomain=$(DOMAIN)
