@@ -25,7 +25,7 @@ stages:
               inlineScript: |
                 az group create \
                   --name ${{ parameters.rgName }} \
-                  --location ${{ parameters.rgLocation }}
+                  --location "${{ parameters.rgLocation }}"
 
                 az deployment group create \
                   --name dep-missionctl-$(Build.BuildNumber) \

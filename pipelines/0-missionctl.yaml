@@ -4,10 +4,11 @@ trigger:
 variables:
   - group: pipesConfig
   - group: prod
-  - name: workdir
-    value: $(Build.SourcesDirectory)/templates
-  - name: rgName
-    value: rg-missionctl
+
+  - name: file
+    value: $(Build.SourcesDirectory)/templates/missionctl.bicep
+  - name: params
+    value: dnsDomain=$(dnsDomain) crSku=Basic
 
 pool:
   vmImage: $(vmImage)
@@ -17,12 +18,13 @@ stages:
     parameters:
       azureConnection: $(azureConnection)
       rgName: $(rgName)
-      file: $(workdir)/missionctl.bicep
-      params: "dnsDomain=$(dnsDomain) crSku=Basic"
+      file: $(file)
+      params: $(params)
 
   - template: modules/bicep-deploy.yaml
     parameters:
       azureConnection: $(azureConnection)
       rgName: $(rgName)
       rgLocation: $(rgLocation)
-      params: "dnsDomain=$(dnsDomain) crSku=Basic"
+      file: $(file)
+      params: $(params)
