@@ -33,4 +33,4 @@ stages:
                 az deployment group validate \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
-                  --parameters "${{ convertToJson(parameters.params) }}"
+                  --parameters "${{ parameters.params }}"
