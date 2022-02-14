@@ -1,0 +1,36 @@
+trigger:
+  - hypermaster
+
+variables:
+  - group: $(globalLibrary)
+  - group: $(specificLibrary)
+  - name: env
+
+pool:
+  vmImage: $(vmImage)
+
+steps:
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: $(azureConnection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az deployment sub create \
+          --location WestEurope \
+          --template-file ./biceps/data/main.bicep \
+          --parameters \
+            dnsDomain=$(dnsDomain) \
+
+stages:
+  - stage: Test
+    jobs:
+      - job: Test
+
+  - stage: DeployUS
+    jobs:
+      - job: DeployUS
+
+  - stage: DeployEurope
+    jobs:
+      - job: DeployEurope

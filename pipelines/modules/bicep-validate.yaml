@@ -24,6 +24,21 @@ stages:
         displayName: Validate Bicep code
         steps:
           - task: AzureCLI@2
+            name: ResourceGroupExist
+            displayName: Check Resource group existance
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                RG_EXIST=$(az group exists --name ${{ parameters.rgName }})
+                echo "$RG_EXIST"
+                if [ "$RG_EXIST" = false ]; then
+                  az group create \
+                    --name ${{ parameters.rgName }} \
+                    --location "${{ parameters.rgLocation }}"
+                fi
+          - task: AzureCLI@2
             name: RunPreflightValidation
             displayName: Run preflight validation
             inputs:
@@ -31,19 +46,19 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                RG_EXIST=$(az group exists --name ${{ parameters.rgName }})
-
-                if [ "$RG_EXIST" = false ]; then
-                  az group create \
-                    --name ${{ parameters.rgName }} \
-                    --location "${{ parameters.rgLocation }}"
-                fi
-
                 az deployment group validate \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
-
+          - task: AzureCLI@2
+            name: CleanUp
+            displayName: Clean up temporary resources
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                echo "$RG_EXIST"
                 if [ "$RG_EXIST" = false ]; then
                   az group delete \
                     --name ${{ parameters.rgName }}
