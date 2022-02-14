@@ -26,3 +26,8 @@ stages:
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
+
+                az deployment group show \
+                  --name dep-missionctl-$(Build.BuildNumber) \
+                  --resource-group ${{ parameters.rgName }} \
+                  --query properties.outputs.crName
