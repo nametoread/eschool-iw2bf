@@ -31,10 +31,12 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                TMP_RG=false
-                if [ $(az group exists --name ${{ parameters.rgName }}) = false ]; then
-                  TMP_RG=true
-                  az group create --name ${{ parameters.rgName }} --location "${{ parameters.rgLocation }}"
+                RG_EXIST=$(az group exists --name ${{ parameters.rgName }})
+
+                if [ "$RG_EXIST" = false ]; then
+                  az group create \
+                    --name ${{ parameters.rgName }} \
+                    --location "${{ parameters.rgLocation }}"
                 fi
 
                 az deployment group validate \
@@ -42,6 +44,7 @@ stages:
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
 
-                if [ "$TMP_RG" = true ] ; then
-                  az group delete --name ${{ parameters.rgName }}
+                if [ "$RG_EXIST" = false ]; then
+                  az group delete \
+                    --name ${{ parameters.rgName }}
                 fi
