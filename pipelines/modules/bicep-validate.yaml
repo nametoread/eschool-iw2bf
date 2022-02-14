@@ -34,7 +34,7 @@ stages:
                 TMP_RG=false
                 if [ $(az group exists --name ${{ parameters.rgName }}) = false ]; then
                   TMP_RG=true
-                  az group create --name ${{ parameters.rgName }} --location ${{ parameters.rgLocation }}
+                  az group create --name ${{ parameters.rgName }} --location "${{ parameters.rgLocation }}"
                 fi
 
                 az deployment group validate \
