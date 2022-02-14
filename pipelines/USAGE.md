@@ -1,24 +1,25 @@
-# Common rules
+# Overview
 
-Every pipeline should include:
-
-- `globalLibrary` - name of global library
-- `specificLibrary` - per-pipeline library
-
-## Global library variables
+There is one global library with following variables:
 
 - `azureConnection` - name of Azure Resource Manager connection
 - `vmImage` - agent label name (ex. `ubuntu-latest`)
 
-# Pipelines configuration
+Also for each pipeline separate library should be created. Hence every pipeline require:
 
-## `missionctl`
+- `globalLibrary` - name of global library
+- `specificLibrary` - per-pipeline library
 
-### Variables
+# Pipelines
 
-### Specific library
+## 0-missionctl
+
+Creation of base infrastructure.
+
+### Library variables
 
 - `dnsDomain` - domain name for DNS Zone
-- `location` - deployment location
 
-## `data`
+### Pipeline variables
+
+Only required.

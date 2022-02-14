@@ -2,13 +2,13 @@ trigger:
   - hypermaster
 
 variables:
-  - group: pipesConfig
-  - group: prod
+  - group: $(globalLibrary)
+  - group: $(specificLibrary)
 
   - name: file
     value: $(Build.SourcesDirectory)/templates/missionctl.bicep
   - name: params
-    value: dnsDomain=$(dnsDomain) crSku=Basic
+    value: dnsDomain=$(dnsDomain)
 
 pool:
   vmImage: $(vmImage)

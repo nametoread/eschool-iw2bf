@@ -31,9 +31,7 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                RG_EXIST=$(az group exists --name ${{ parameters.rgName }})
-                echo "$RG_EXIST"
-                if [ "$RG_EXIST" = false ]; then
+                if [ $(az group exists --name ${{ parameters.rgName }}) = false ]; then
                   az group create \
                     --name ${{ parameters.rgName }} \
                     --location "${{ parameters.rgLocation }}"
@@ -50,16 +48,3 @@ stages:
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
-          - task: AzureCLI@2
-            name: CleanUp
-            displayName: Clean up temporary resources
-            inputs:
-              azureSubscription: ${{ parameters.azureConnection }}
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                echo "$RG_EXIST"
-                if [ "$RG_EXIST" = false ]; then
-                  az group delete \
-                    --name ${{ parameters.rgName }}
-                fi

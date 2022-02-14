@@ -3,8 +3,6 @@ parameters:
     default: ""
   - name: rgName
     default: ""
-  - name: rgLocation
-    default: ""
   - name: file
     default: ""
   - name: params
@@ -23,10 +21,6 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                az group create \
-                  --name ${{ parameters.rgName }} \
-                  --location "${{ parameters.rgLocation }}"
-
                 az deployment group create \
                   --name dep-missionctl-$(Build.BuildNumber) \
                   --resource-group ${{ parameters.rgName }} \
