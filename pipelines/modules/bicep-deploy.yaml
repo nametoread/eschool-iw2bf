@@ -8,8 +8,7 @@ parameters:
   - name: file
     default: ""
   - name: params
-    type: object
-    default: {}
+    default: ""
 
 stages:
   - stage: Deploy
@@ -32,4 +31,4 @@ stages:
                   --name dep-missionctl-$(Build.BuildNumber) \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
-                  --parameters "${{ convertToJson(parameters.params) }}"
+                  --parameters ${{ parameters.params }}

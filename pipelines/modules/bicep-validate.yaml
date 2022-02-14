@@ -6,8 +6,7 @@ parameters:
   - name: file
     default: ""
   - name: params
-    type: object
-    default: {}
+    default: ""
 
 stages:
   - stage: Validate

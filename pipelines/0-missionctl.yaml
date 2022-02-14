@@ -25,6 +25,4 @@ stages:
       azureConnection: $(azureConnection)
       rgName: $(rgName)
       rgLocation: $(rgLocation)
-      params:
-        - dnsDomain: $(dnsDomain)
-        - crSku: "Basic"
+      params: "dnsDomain=$(dnsDomain) crSku=Basic"
