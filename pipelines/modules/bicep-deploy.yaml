@@ -45,6 +45,10 @@ stages:
                   --output tsv
                 )
 
+                az devops configure --defaults \
+                  project=$(System.TeamProject) \
+                  organization=$(System.CollectionUri)
+
                 VG_ID=$(az pipelines variable-group list \
                   --group-name globalGroup \
                   --query "[].id" \
