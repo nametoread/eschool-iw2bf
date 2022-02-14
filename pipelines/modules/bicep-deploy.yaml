@@ -1,0 +1,36 @@
+parameters:
+  - name: azureConnection
+    default: ""
+  - name: rgName
+    default: ""
+  - name: rgLocation
+    default: ""
+  - name: file
+    default: ""
+  - name: params
+    type: object
+    default:
+      - location: ${{ parameters.rgLocation }}
+
+stages:
+  - stage: Deploy
+    jobs:
+      - job: Deploy
+        steps:
+          - task: AzureCLI@2
+            name: Deploy
+            displayName: Deploy base infrastructure to Azure
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az group create \
+                  --name ${{ parameters.rgName }} \
+                  --location ${{ parameters.rgLocation }}
+
+                az deployment group create \
+                  --name dep-missionctl-$(Build.BuildNumber) \
+                  --resource-group ${{ parameters.rgName }} \
+                  --template-file ${{ parameters.file }} \
+                  --parameters "${{ convertToJson(parameters.params) }}"

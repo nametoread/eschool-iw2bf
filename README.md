@@ -15,4 +15,4 @@
 
 1. Create **Organization**
 2. Create _Azure Resource Manager_ **Service connection** with _Service principal (manual)_
-3. Add _infrastructure_ and _source code_ repos from **GitHub**
+3. Create _GitHub_ **Service connection** (or add _infrastructure_ repo during pipeline creation)

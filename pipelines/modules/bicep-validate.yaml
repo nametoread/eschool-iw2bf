@@ -1,0 +1,32 @@
+parameters:
+  - name: azureConnection
+    default: ""
+  - name: rgName
+    default: ""
+  - name: file
+    default: ""
+
+stages:
+  - stage: Validate
+    jobs:
+      - job: LintBicep
+        displayName: Lint Bicep code
+        steps:
+          - script: |
+              az bicep build --file ${{ parameters.file }}
+            name: LintBicepCode
+            displayName: Run Bicep linter
+      - job: ValidateBicep
+        displayName: Validate Bicep code
+        steps:
+          - task: AzureCLI@2
+            name: RunPreflightValidation
+            displayName: Run preflight validation
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az deployment group validate \
+                  --resource-group ${{ parameters.rgName }} \
+                  --template-file ${{ parameters.file }} \

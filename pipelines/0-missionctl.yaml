@@ -1,0 +1,29 @@
+trigger:
+  - hypermaster
+
+variables:
+  - group: $(globalLibrary)
+  - group: $(specificLibrary)
+  - name: workdir
+    value: $(Build.SourcesDirectory)/templates
+  - name: rgName
+    value: rg-missionctl
+
+pool:
+  vmImage: $(vmImage)
+
+stages:
+  - template: modules/bicep-validate.yaml
+    parameters:
+      azureConnection: $(azureConnection)
+      rgName: $(rgName)
+      file: $(workdir)/missionctl.bicep
+
+  - template: modules/bicep-deploy.yaml
+    parameters:
+      azureConnection: $(azureConnection)
+      rgName: $(rgName)
+      rgLocation: $(rgLocation)
+      params:
+        - dnsDomain: $(dnsDomain)
+        - crSku: "Basic"

@@ -1,2 +1,4 @@
+# Dot files except .gitignore and .example
 .*
 !.gitignore
+!*.example
