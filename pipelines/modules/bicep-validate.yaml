@@ -3,6 +3,8 @@ parameters:
     default: ""
   - name: rgName
     default: ""
+  - name: rgLocation
+    default: ""
   - name: file
     default: ""
   - name: params
@@ -29,7 +31,17 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
+                TMP_RG=false
+                if [ $(az group exists --name ${{ parameters.rgName }}) = false ]; then
+                  TMP_RG=true
+                  az group create --name ${{ parameters.rgName }} --location ${{ parameters.rgLocation }}
+                fi
+
                 az deployment group validate \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
+
+                if [ "$TMP_RG" = true ] ; then
+                  az group delete --name ${{ parameters.rgName }}
+                fi
