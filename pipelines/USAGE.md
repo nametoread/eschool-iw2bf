@@ -1,14 +1,14 @@
 # Overview
 
-There is one global library with following variables:
+There is one **global group** with following variables:
 
 - `azureConnection` - name of Azure Resource Manager connection
 - `vmImage` - agent label name (ex. `ubuntu-latest`)
 
-Also for each pipeline separate library should be created. Hence every pipeline require:
+Also for each pipeline **separate group** should be created. Hence every pipeline require:
 
-- `globalLibrary` - name of global library
-- `specificLibrary` - per-pipeline library
+- `globalGroup` - global group name
+- `moduleGroup` - module group name
 
 # Pipelines
 
@@ -16,7 +16,7 @@ Also for each pipeline separate library should be created. Hence every pipeline 
 
 Creation of base infrastructure.
 
-### Library variables
+### Group variables
 
 - `dnsDomain` - domain name for DNS Zone
 

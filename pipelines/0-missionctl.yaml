@@ -2,8 +2,8 @@ trigger:
   - hypermaster
 
 variables:
-  - group: $(globalLibrary)
-  - group: $(specificLibrary)
+  - group: $(globalGroup)
+  - group: $(moduleGroup)
 
   - name: file
     value: $(Build.SourcesDirectory)/templates/missionctl.bicep
@@ -26,6 +26,5 @@ stages:
     parameters:
       azureConnection: $(azureConnection)
       rgName: $(rgName)
-      rgLocation: $(rgLocation)
       file: $(file)
       params: $(params)
