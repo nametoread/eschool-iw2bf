@@ -1,6 +1,8 @@
+param location string = resourceGroup().location
+
 param dnsDomain string
 
-param crName string = uniqueString(subscription().subscriptionId)
+param crName string = uniqueString(resourceGroup().name, subscription().subscriptionId)
 param crSku string = 'Basic'
 
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
@@ -10,7 +12,7 @@ resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
 
 resource cr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: crName
-  location: resourceGroup().location
+  location: location
   sku: {
     name: crSku
   }
