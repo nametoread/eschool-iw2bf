@@ -22,6 +22,7 @@ stages:
             displayName: Run Bicep linter
       - job: ValidateBicep
         displayName: Validate Bicep code
+        dependOn: Validate
         steps:
           - task: AzureCLI@2
             name: ResourceGroupExist
