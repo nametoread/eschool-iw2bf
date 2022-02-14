@@ -2,8 +2,8 @@ trigger:
   - hypermaster
 
 variables:
-  - group: "$(globalGroup)"
-  - group: "$(moduleGroup)"
+  - group: globalGroup
+  - group: missionCtlGroup
 
   - name: file
     value: $(Build.SourcesDirectory)/templates/missionctl.bicep
