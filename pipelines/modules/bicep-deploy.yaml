@@ -28,7 +28,7 @@ stages:
                   --parameters ${{ parameters.params }}
       - job: UpdateLibrary
         displayName: Update Library
-        dependOn: Deploy
+        dependsOn: Deploy
         steps:
           - task: AzureCLI@2
             name: SaveACRname
