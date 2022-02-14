@@ -22,16 +22,17 @@ steps:
   - checkout: app
   - task: AzureCLI@2
     inputs:
-      azureSubscription: $(azureConnection)
-      scriptType: "bash"
-      scriptLocation: "inlineScript"
-      addSpnToEnvironment: true
-      useGlobalConfig: true
+      azureSubscription: '$(azureConnection)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
       inlineScript: |
         IMAGE='eschool'
         TAG='0.1-dev'
-
+        
         az acr build \
           --resource-group $(resourceGroup) \
           --registry $(acrName) \
           --image ${IMAGE}:${TAG} .
+      addSpnToEnvironment: true
+      useGlobalConfig: true
+      workingDirectory: 'eschool-sorcery'
