@@ -9,8 +9,7 @@ parameters:
     default: ""
   - name: params
     type: object
-    default:
-      - location: ${{ parameters.rgLocation }}
+    default: {}
 
 stages:
   - stage: Deploy
