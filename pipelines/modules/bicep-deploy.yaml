@@ -11,24 +11,24 @@ parameters:
 stages:
   - stage: Deploy
     jobs:
-      # - job: Deploy
-      #   steps:
-      #     - task: AzureCLI@2
-      #       name: Deploy
-      #       displayName: Deploy base infrastructure to Azure
-      #       inputs:
-      #         azureSubscription: ${{ parameters.azureConnection }}
-      #         scriptType: "bash"
-      #         scriptLocation: "inlineScript"
-      #         inlineScript: |
-      #           az deployment group create \
-      #             --name dep-missionctl-$(Build.BuildNumber) \
-      #             --resource-group ${{ parameters.rgName }} \
-      #             --template-file ${{ parameters.file }} \
-      #             --parameters ${{ parameters.params }}
+      - job: Deploy
+        steps:
+          - task: AzureCLI@2
+            name: Deploy
+            displayName: Deploy base infrastructure to Azure
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az deployment group create \
+                  --name dep-missionctl-$(Build.BuildNumber) \
+                  --resource-group ${{ parameters.rgName }} \
+                  --template-file ${{ parameters.file }} \
+                  --parameters ${{ parameters.params }}
       - job: UpdateLibrary
         displayName: Update Library
-        # dependsOn: Deploy
+        dependsOn: Deploy
         steps:
           - task: AzureCLI@2
             name: SaveACRname
@@ -45,9 +45,10 @@ stages:
                   --output tsv
                 )
 
+                az devops login --organization $(System.CollectionUri)
+
                 az devops configure --defaults \
-                  project=$(System.TeamProject) \
-                  organization=$(System.CollectionUri)
+                  project=$(System.TeamProject)
 
                 VG_ID=$(az pipelines variable-group list \
                   --group-name globalGroup \
@@ -57,8 +58,6 @@ stages:
 
                 echo "HELP"
                 echo "VG_ID=$VG_ID"
-                echo "System.TeamProject=$(System.TeamProject)"
-                echo "System.CollectionUri=$(System.CollectionUri)"
                 echo "HELP"
 
                 # VAR_EXIST=$(az pipelines variable-group variable list \
