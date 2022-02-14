@@ -19,8 +19,8 @@ stages:
       rgName: $(rgName)
       file: $(workdir)/missionctl.bicep
       params:
-        - dnsDomain: $(dnsDomain)
-        - crSku: "Basic"
+        dnsDomain: $(dnsDomain)
+        crSku: "Basic"
 
   - template: modules/bicep-deploy.yaml
     parameters:
