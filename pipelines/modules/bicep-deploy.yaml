@@ -45,10 +45,11 @@ stages:
                   --output tsv
                 )
 
-                az devops login --organization $(System.CollectionUri)
-
-                az devops configure --defaults \
-                  project=$(System.TeamProject)
+                az devops configure \
+                  --defaults \
+                    organization=$(System.TeamFoundationCollectionUri) \
+                    project=$(System.TeamProject) \
+                  --use-git-aliases true
 
                 VG_ID=$(az pipelines variable-group list \
                   --group-name globalGroup \
@@ -56,23 +57,21 @@ stages:
                   --output tsv
                 )
 
-                echo "HELP"
-                echo "VG_ID=$VG_ID"
-                echo "HELP"
+                VAR_EXIST=$(az pipelines variable-group variable list \
+                  --group-id "$VG_ID" \
+                  --query "acrName" \
+                  --output tsv
+                )      
 
-                # VAR_EXIST=$(az pipelines variable-group variable list \
-                #   --group-id "$VG_ID" \
-                #   --query "acrName" \
-                #   --output tsv
-                # )      
+                VG_ACTION=update
 
-                # VG_ACTION=update
+                if [ -z "$VAR_EXIST" ]; then
+                  VG_ACTION=create
+                fi
 
-                # if [ -z "$VAR_EXIST" ]; then
-                #   VG_ACTION=create
-                # fi
-
-                # az pipelines variable-group variable "$VG_ACTION" \
-                #   --group-id "$VG_ID" \
-                #   --name acrName \
-                #   --value "$ACR_NAME"
+                az pipelines variable-group variable "$VG_ACTION" \
+                  --group-id "$VG_ID" \
+                  --name acrName \
+                  --value "$ACR_NAME"
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
