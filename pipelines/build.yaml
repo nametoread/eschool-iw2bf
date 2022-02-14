@@ -11,8 +11,8 @@ resources:
         - hypermaster
 
 variables:
-  - group: $(globalLibrary)
-  - group: $(specificLibrary)
+  - group: pipesConfig
+  - group: buildConfig
 
 pool:
   vmImage: $(vmImage)
