@@ -13,9 +13,6 @@ param acrSku string = 'Basic'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'rg-${rgName}'
   location: rgLocation
-  tags: {
-    created: timestamp
-  }
 }
 
 module dnsZone 'dns_zone.bicep' = {
@@ -34,3 +31,5 @@ module acr 'acr.bicep'= {
     sku: acrSku
   }
 }
+
+output acrName string = acrName
