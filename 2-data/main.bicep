@@ -58,7 +58,7 @@ resource dbDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 
 resource dbVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   parent: dbDnsZone
-  name: 'mysqlDbLink'
+  name: 'mysql-db-link'
   location: 'global'
   properties: {
     virtualNetwork: {

@@ -1,0 +1,32 @@
+trigger:
+  - hypermaster
+
+variables:
+  - group: globalGroup
+  - group: appGroup
+
+  - name: file
+    value: $(Build.SourcesDirectory)/3-app/main.bicep
+  - name: params
+    value: |
+      asPlanName=$(asPlanName) \
+      asName=$(asName)
+
+pool:
+  vmImage: $(vmImage)
+
+stages:
+  - template: ../modules/bicep-validate.yaml
+    parameters:
+      azureConnection: $(azureConnection)
+      rgName: $(rgName)
+      rgLocation: $(rgLocation)
+      file: $(file)
+      params: $(params)
+
+  - template: ../modules/bicep-deploy.yaml
+    parameters:
+      azureConnection: $(azureConnection)
+      rgName: $(rgName)
+      file: $(file)
+      params: $(params)

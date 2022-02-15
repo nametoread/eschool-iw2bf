@@ -53,25 +53,27 @@ stages:
                   -ResourceGroupName "${{ parameters.rgName }}" `
                   -Name "dep-${{ parameters.rgName }}-$(Build.BuildNumber)"
 
-                foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
-                  $name = $raw_output.Key
-                  $value = $raw_output.Value.Value
+                if (![string]::IsNullOrWhiteSpace($deployment)) {
+                  foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
+                    $name = $raw_output.Key
+                    $value = $raw_output.Value.Value
 
-                  $var_exist = az pipelines variable-group variable list `
-                    --group-id "$vg_id" `
-                    --query "$name" `
-                    --output tsv
+                    $var_exist = az pipelines variable-group variable list `
+                      --group-id "$vg_id" `
+                      --query "$name" `
+                      --output tsv
 
-                  $vg_action = "update"
+                    $vg_action = "update"
 
-                  if ([string]::IsNullOrWhiteSpace($var_exist)) {
-                    $vg_action = "create"
+                    if ([string]::IsNullOrWhiteSpace($var_exist)) {
+                      $vg_action = "create"
+                    }
+
+                    az pipelines variable-group variable "$vg_action" `
+                      --group-id "$vg_id" `
+                      --name "$name" `
+                      --value "$value"
                   }
-
-                  az pipelines variable-group variable "$vg_action" `
-                    --group-id "$vg_id" `
-                    --name "$name" `
-                    --value "$value"
                 }
               azurePowerShellVersion: "LatestVersion"
               pwsh: true

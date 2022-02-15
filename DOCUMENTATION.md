@@ -37,6 +37,15 @@ Also for each pipeline **separate group** should be created (lookup name in modu
   - `dbAdminPassword` - database admin password (temporary)
   - `kvName` - key vault name
 
+## 3-app
+
+- _Description:_ Storage infrastructure (MySQL Flexible, Key Vault)
+- _Group:_ `appGroup`
+  - `rgName` - resource group name
+  - `rgLocation` - resource group region
+  - `asPlanName` - app service plan name
+  - `asName` - app service name (also subdomain, ex. `few-random-words`)
+
 # Notes
 
 `bicep-deploy` module require **Administrator** role in `globalGroup`
