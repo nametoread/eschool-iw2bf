@@ -8,7 +8,7 @@ parameters:
   - name: params
     default: ""
   - name: outputs
-    default: []
+    default: {}
 
 stages:
   - stage: Deploy
