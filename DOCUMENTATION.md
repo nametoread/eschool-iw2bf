@@ -18,3 +18,7 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 # Notes
 
 `bicep-deploy` module require **Administrator** role in `globalGroup`
+
+# Misc
+
+- Powershell support env variables like `$(Variable.Name)` or `$Env:VARIABLE_NAME`
