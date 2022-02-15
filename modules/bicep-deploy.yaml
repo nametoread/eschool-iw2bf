@@ -38,7 +38,8 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
-                az devops configure --defaults \
+                az devops configure \
+                  --defaults \
                     organization="$(System.TeamFoundationCollectionUri)" \
                     project="$(System.TeamProject)" \
                   --use-git-aliases true
@@ -62,10 +63,6 @@ stages:
                   $name = $raw_output.Key
                   $value = $raw_output.Value.Value
 
-                  Write-Host "vg_id $vg_id"
-                  Write-Host "name $name"
-                  Write-Host "value $value"
-
                   $var_exist = az pipelines variable-group variable list `
                     --group-id "$vg_id" `
                     --query "$name" `
@@ -85,4 +82,4 @@ stages:
               azurePowerShellVersion: "LatestVersion"
               pwsh: true
               env:
-              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+                AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
