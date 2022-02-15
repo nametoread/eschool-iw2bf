@@ -7,9 +7,6 @@ parameters:
     default: ""
   - name: params
     default: ""
-  - name: outputs
-    type: object
-    default: []
 
 stages:
   - stage: Deploy
@@ -46,45 +43,38 @@ stages:
                     organization=$(System.TeamFoundationCollectionUri) \
                     project=$(System.TeamProject) \
                   --use-git-aliases true
-          - ${{ each output in parameters.outputs }}:
-              - task: AzureCLI@2
-                name: SaveVar_${{ output }}
-                displayName: Save '${{ output }}' to global group
-                inputs:
-                  azureSubscription: ${{ parameters.azureConnection }}
-                  scriptType: "bash"
-                  scriptLocation: "inlineScript"
-                  inlineScript: |
-                    VG_ID=$(az pipelines variable-group list \
-                      --group-name globalGroup \
-                      --query "[].id" \
+          - task: AzureCLI@2
+            name: SaveOutputs
+            displayName: Save outputs to global group
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "pscore"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                $vg_id = az pipelines variable-group list `
+                  --group-name globalGroup `
+                  --query "[].id" `
+                  --output tsv
+
+                foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
+                    $name = $raw_output.Key
+                    $value = $raw_output.Value.Value
+
+                    $var_exist = az pipelines variable-group variable list `
+                      --group-id "$vg_id" `
+                      --query "$name" `
                       --output tsv
-                    )
 
-                    VAR_EXIST=$(az pipelines variable-group variable list \
-                      --group-id "$VG_ID" \
-                      --query "${{ output }}" \
-                      --output tsv
-                    )
+                    $vg_action = "update"
 
-                    VG_ACTION=update
+                    if ($var_exist -eq "") {
+                      $vg_action = "create"
+                    }
 
-                    if [ -z "$VAR_EXIST" ]; then
-                      VG_ACTION=create
-                    fi
-
-                    OUTPUT=$(az deployment group show \
-                      --name dep-missionctl-$(Build.BuildNumber) \
-                      --resource-group ${{ parameters.rgName }} \
-                      --query "properties.outputs.${{ output }}.value" \
-                      --output tsv
-                    )
-
-                    echo "OUTPUT=$OUTPUT"
-
-                    az pipelines variable-group variable "$VG_ACTION" \
-                      --group-id "$VG_ID" \
-                      --name "${{ output }}" \
-                      --value "$OUTPUT"
-                env:
-                  AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+                    az pipelines variable-group variable "$vg_action" `
+                      --group-id "$vg_id" `
+                      --name "$name" `
+                      --value "$value"
+                }
+            env:
+              AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
