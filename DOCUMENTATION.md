@@ -15,6 +15,12 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 - _Group:_ `missionCtlGroup`
   - `dnsDomain` - domain name for DNS Zone
 
+## 1-ci
+
+- _Description:_ Continious integration. App image build and push to Container registry.
+- _Group:_ `ciGroup`
+  - **currently not in use**
+
 # Notes
 
 `bicep-deploy` module require **Administrator** role in `globalGroup`

@@ -1,0 +1,40 @@
+trigger: none
+
+resources:
+  repositories:
+    - repository: app
+      type: github
+      name: nametoread/eschool-sorcery
+      ref: hypermaster
+      endpoint: nametoread
+      trigger:
+        - hypermaster
+
+variables:
+  - group: globalGroup
+# - group: ciGroup
+
+pool:
+  vmImage: $(vmImage)
+
+steps:
+  - checkout: self
+  - checkout: app
+  - task: AzureCLI@2
+    inputs:
+      azureSubscription: "$(azureServiceConnection)"
+      scriptType: "bash"
+      scriptLocation: "inlineScript"
+      inlineScript: |
+        IMAGE='eschool'
+        TAG=$(Build.BuildNumber)
+
+        az acr build \
+          --resource-group $(crRg) \
+          --registry $(crName) \
+          --image ${IMAGE}:${TAG} .
+
+        echo 'DONT FORGET TO REASIGN latest TAG'
+      addSpnToEnvironment: true
+      useGlobalConfig: true
+      workingDirectory: "eschool-sorcery"

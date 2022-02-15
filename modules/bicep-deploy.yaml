@@ -29,7 +29,7 @@ stages:
                   --parameters ${{ parameters.params }}
       - job: UpdateLibrary
         displayName: Add outputs to Library
-        dependsOn: Deploy
+        dependsOn: CreateInfrastructure
         steps:
           - task: AzurePowerShell@5
             name: SaveOutputs
