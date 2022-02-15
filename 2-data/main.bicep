@@ -13,6 +13,7 @@ param dbSkuName string = 'Standard_B1ms'
 param dbSkuTier string = 'Burstable'
 
 param kvName string
+param kvSkuName string = 'standard'
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnName
@@ -86,4 +87,19 @@ resource mysqlFlexible 'Microsoft.DBforMySQL/flexibleServers@2021-05-01' = {
   dependsOn: [
     dbVnetLink
   ]
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
+  name: kvName
+  location: location
+  properties: {
+    enabledForDeployment: true
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    tenantId: tenant().tenantId
+    sku: {
+      name: kvSkuName
+      family: 'A'
+    }
+  }
 }

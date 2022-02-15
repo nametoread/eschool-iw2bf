@@ -35,6 +35,7 @@ Also for each pipeline **separate group** should be created (lookup name in modu
   - `dbName` - database name (ex. `few-random-words`)
   - `dbAdminLogin` - database admin login
   - `dbAdminPassword` - database admin password (temporary)
+  - `kvName` - key vault name
 
 # Notes
 

@@ -14,7 +14,8 @@ variables:
       vnAddressSpaceIp=$(vnAddressSpaceIp) \
       dbName=$(dbName) \
       dbAdminLogin=$(dbAdminLogin) \
-      dbAdminPassword="$(dbAdminPassword)"
+      dbAdminPassword="$(dbAdminPassword)" \
+      kvName=$(kvName)
 
 pool:
   vmImage: $(vmImage)
