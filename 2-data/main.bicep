@@ -32,7 +32,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
 }
 
 resource dbSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
-  name: '${vnet.name}-mysqldb'
+  name: '${vnet.name}/mysqldb'
   properties: {
     addressPrefix: '${vnAddressSpaceIp}/${vnDefaultSubnetPrefix}'
     delegations: [
