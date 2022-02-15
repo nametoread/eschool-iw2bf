@@ -32,9 +32,9 @@ stages:
         displayName: Update Library with outputs
         dependsOn: Deploy
         steps:
-          - taks: AzureCLI@2
-            name: EstablishDevOpsConnection
-            displayName: Login to DevOps
+          - task: AzureCLI@2
+            name: DevOpsParamsConfigure
+            displayName: Set default DevOps parameters
             inputs:
               azureSubscription: ${{ parameters.azureConnection }}
               scriptType: "bash"
