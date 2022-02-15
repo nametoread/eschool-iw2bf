@@ -22,7 +22,7 @@ steps:
   - checkout: app
   - task: AzureCLI@2
     inputs:
-      azureSubscription: "$(azureServiceConnection)"
+      azureSubscription: "$(azureConnection)"
       scriptType: "bash"
       scriptLocation: "inlineScript"
       inlineScript: |
