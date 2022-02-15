@@ -26,8 +26,8 @@ stages:
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
-      - job: UpdateDevOpsLibrary
-        displayName: Update DevOps Library with outputs
+      - job: UpdateLibrary
+        displayName: Add outputs to Library
         dependsOn: Deploy
         steps:
           - task: AzurePowerShell@5
@@ -63,7 +63,7 @@ stages:
 
                   $vg_action = "update"
 
-                  if ($var_exist -eq "") {
+                  if ([string]::IsNullOrWhiteSpace($var_exist)) {
                     $vg_action = "create"
                   }
 
