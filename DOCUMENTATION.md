@@ -52,4 +52,4 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 
 # Misc
 
-- Powershell support env variables like `$(Variable.Name)` or `$Env:VARIABLE_NAME`.
+- Powershell support env variables like `$(Variable.Name)` or `$Env:VARIABLE_NAME`
