@@ -11,7 +11,8 @@ parameters:
 stages:
   - stage: Deploy
     jobs:
-      - job: Deploy
+      - job: CreateInfrastructure
+        displayName: Create infrastructure
         steps:
           - task: AzureCLI@2
             name: Deploy
