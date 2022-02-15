@@ -21,8 +21,9 @@ stages:
               scriptType: "bash"
               scriptLocation: "inlineScript"
               inlineScript: |
+                TIMESTAMP
                 az deployment group create \
-                  --name dep-missionctl-$(Build.BuildNumber) \
+                  --name "dep-missionctl-$(Build.BuildNumber)" \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
@@ -55,6 +56,10 @@ stages:
                   --group-name globalGroup `
                   --query "[].id" `
                   --output tsv
+
+                $deployment = Get-AzResourceGroupDeployment `
+                  -ResourceGroupName "${{ parameters.rgName }}" `
+                  -Name "dep-missionctl-$(Build.BuildNumber)"
 
                 foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
                     $name = $raw_output.Key

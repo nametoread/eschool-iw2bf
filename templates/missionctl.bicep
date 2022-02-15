@@ -22,3 +22,4 @@ resource cr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
 }
 
 output crName string = crName
+output crSku string = crSku
