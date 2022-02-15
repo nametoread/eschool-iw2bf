@@ -10,7 +10,8 @@ variables:
   - name: params
     value: |
       asPlanName=$(asPlanName) \
-      asName=$(asName)
+      asName=$(asName) \
+      crName=$(crName)
 
 pool:
   vmImage: $(vmImage)
