@@ -7,6 +7,8 @@ parameters:
     default: ""
   - name: params
     default: ""
+  - name: outputs
+    default: []
 
 stages:
   - stage: Deploy
@@ -27,12 +29,26 @@ stages:
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
       - job: UpdateLibrary
-        displayName: Update Library
+        displayName: Update Library with outputs
         dependsOn: Deploy
         steps:
-          - task: AzureCLI@2
-            name: SaveACRname
-            displayName: Save Container Registry name to global group
+          - taks: AzureCLI@2
+            name: EstablishDevOpsConnection
+            displayName: Login to DevOps
+            inputs:
+              azureSubscription: ${{ parameters.azureConnection }}
+              scriptType: "bash"
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                az devops configure \
+                  --defaults \
+                    organization=$(System.TeamFoundationCollectionUri) \
+                    project=$(System.TeamProject) \
+                  --use-git-aliases true
+          - ${{ each output in parameters.outputs }}:
+            task: AzureCLI@2
+            name: SaveVar_${{ output }}
+            displayName: Save '${{ output }}' to global group
             inputs:
               azureSubscription: ${{ parameters.azureConnection }}
               scriptType: "bash"
@@ -41,15 +57,9 @@ stages:
                 ACR_NAME=$(az deployment group show \
                   --name dep-missionctl-$(Build.BuildNumber) \
                   --resource-group ${{ parameters.rgName }} \
-                  --query properties.outputs.crName.value \
+                  --query properties.outputs.${{ output }}.value \
                   --output tsv
                 )
-
-                az devops configure \
-                  --defaults \
-                    organization=$(System.TeamFoundationCollectionUri) \
-                    project=$(System.TeamProject) \
-                  --use-git-aliases true
 
                 VG_ID=$(az pipelines variable-group list \
                   --group-name globalGroup \
@@ -59,7 +69,7 @@ stages:
 
                 VAR_EXIST=$(az pipelines variable-group variable list \
                   --group-id "$VG_ID" \
-                  --query "acrName" \
+                  --query "${{ output }}" \
                   --output tsv
                 )      
 
@@ -71,7 +81,7 @@ stages:
 
                 az pipelines variable-group variable "$VG_ACTION" \
                   --group-id "$VG_ID" \
-                  --name acrName \
+                  --name ${{ output }} \
                   --value "$ACR_NAME"
             env:
               AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

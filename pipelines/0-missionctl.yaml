@@ -28,3 +28,5 @@ stages:
       rgName: $(rgName)
       file: $(file)
       params: $(params)
+      outputs:
+        - acrName
