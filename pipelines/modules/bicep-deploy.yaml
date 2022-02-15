@@ -76,7 +76,7 @@ stages:
                     OUTPUT=$(az deployment group show \
                       --name dep-missionctl-$(Build.BuildNumber) \
                       --resource-group ${{ parameters.rgName }} \
-                      --query properties.outputs.${{ output }}.value \
+                      --query "properties.outputs.${{ output }}.value" \
                       --output tsv
                     )
 
@@ -84,7 +84,7 @@ stages:
 
                     az pipelines variable-group variable "$VG_ACTION" \
                       --group-id "$VG_ID" \
-                      --name ${{ output }} \
+                      --name "${{ output }}" \
                       --value "$OUTPUT"
                 env:
                   AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
