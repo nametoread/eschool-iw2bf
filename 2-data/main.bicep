@@ -52,7 +52,7 @@ resource dbSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
 }
 
 resource dbDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: '${dbName}.private.mysql.database.azure.com'
+  name: '${dbName}.mysql.database.azure.com'
   location: 'global'
 }
 
@@ -97,6 +97,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
     tenantId: tenant().tenantId
+    accessPolicies: []
     sku: {
       name: kvSkuName
       family: 'A'
