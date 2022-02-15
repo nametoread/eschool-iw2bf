@@ -26,23 +26,10 @@ stages:
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
-      - job: UpdateLibrary
-        displayName: Update Library with outputs
+      - job: UpdateDevOpsLibrary
+        displayName: Update DevOps Library with outputs
         dependsOn: Deploy
         steps:
-          - task: AzureCLI@2
-            name: DevOpsParamsConfigure
-            displayName: Set default DevOps parameters
-            inputs:
-              azureSubscription: ${{ parameters.azureConnection }}
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                az devops configure \
-                  --defaults \
-                    organization="$(System.TeamFoundationCollectionUri)" \
-                    project="$(System.TeamProject)" \
-                  --use-git-aliases true
           - task: AzurePowerShell@5
             name: SaveOutputs
             displayName: Save outputs to global group
@@ -50,6 +37,12 @@ stages:
               azureSubscription: ${{ parameters.azureConnection }}
               ScriptType: "InlineScript"
               Inline: |
+                az devops configure `
+                  --defaults `
+                    organization="${env:System.TeamFoundationCollectionUri}" `
+                    project="${env:System.TeamProject}" `
+                  --use-git-aliases true
+
                 $vg_id = az pipelines variable-group list `
                   --group-name globalGroup `
                   --query "[].id" `
@@ -57,7 +50,7 @@ stages:
 
                 $deployment = Get-AzResourceGroupDeployment `
                   -ResourceGroupName "${{ parameters.rgName }}" `
-                  -Name "dep-missionctl-$(Build.BuildNumber)"
+                  -Name "dep-missionctl-${env:Build.BuildNumber}"
 
                 foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
                   $name = $raw_output.Key
