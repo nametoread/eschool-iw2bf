@@ -13,6 +13,8 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 
 - _Description:_ Creation of base infrastructure (DNS Zone, Container Registry).
 - _Group:_ `missionCtlGroup`
+  - `rgName` - resource group name
+  - `rgLocation` - resource group region
   - `dnsDomain` - domain name for DNS Zone
 
 ## 1-ci
@@ -20,6 +22,18 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 - _Description:_ Continious integration. App image build and push to Container registry.
 - _Group:_ `ciGroup`
   - **currently not in use**
+
+## 2-data
+
+- _Description:_ Storage infrastructure (MySQL Flexible, Key Vault)
+- _Group:_ `dataGroup`
+  - `rgName` - resource group name
+  - `rgLocation` - resource group region
+  - `vnName` - virtual network name
+  - `vnAddressSpaceIp` - virtual network address space (IPv4 only, default prefix is 16)
+  - `dbName` - database name (ex. `few-random-words`)
+  - `dbAdminLogin` - database admin login
+  - `dbAdminPassword` - database admin password (temporary)
 
 # Notes
 
