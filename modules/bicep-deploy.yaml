@@ -37,6 +37,11 @@ stages:
               azureSubscription: ${{ parameters.azureConnection }}
               ScriptType: "InlineScript"
               Inline: |
+                Write-Host "1 $(System.TeamFoundationCollectionUri)"
+                Write-Host "2 ${env:System.TeamFoundationCollectionUri}"
+                Write-Host "3 $Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI}"
+                Write-Host "4 $Env:System.TeamFoundationCollectionUri"
+
                 az devops configure `
                   --defaults `
                     organization="${env:System.TeamFoundationCollectionUri}" `
