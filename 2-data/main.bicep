@@ -6,6 +6,7 @@ param vnAddressSpacePrefix int = 16
 param vnDefaultSubnetPrefix int = 24
 
 param dbName string
+param dbSubnetAddressIp string
 param dbAdminLogin string
 param dbAdminPassword string
 param dbSkuName string = 'Standard_B1ms'
@@ -35,7 +36,7 @@ resource dbSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   parent: vnet
   name: 'mysqldb'
   properties: {
-    addressPrefix: '${vnAddressSpaceIp}/${vnDefaultSubnetPrefix}'
+    addressPrefix: '${dbSubnetAddressIp}/${vnDefaultSubnetPrefix}'
     delegations: [
       {
         name: 'dlg-Microsoft.DBforMySQL-flexibleServers'

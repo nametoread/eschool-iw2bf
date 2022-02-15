@@ -31,6 +31,7 @@ Also for each pipeline **separate group** should be created (lookup name in modu
   - `rgLocation` - resource group region
   - `vnName` - virtual network name
   - `vnAddressSpaceIp` - virtual network address space (IPv4 only, default prefix is 16)
+  - `dbSubnetAddressIp` - subnet IPv4 address dedicated to database
   - `dbName` - database name (ex. `few-random-words`)
   - `dbAdminLogin` - database admin login
   - `dbAdminPassword` - database admin password (temporary)
