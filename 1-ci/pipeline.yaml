@@ -1,15 +1,18 @@
 trigger:
-  - app-hypermaster
+  - none
 
 resources:
   repositories:
     - repository: app
       type: github
-      name: nametoread/eschool-sorcery
-      ref: app-hypermaster
       endpoint: nametoread
+      name: nametoread/eschool-sorcery
+      ref: hypermaster
       trigger:
-        - hypermaster
+        batch: true
+        branches:
+          include:
+            - hypermaster
 
 variables:
   - group: globalGroup
