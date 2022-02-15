@@ -29,4 +29,4 @@ stages:
       file: $(file)
       params: $(params)
       outputs:
-        - acrName
+        - "acrName"
