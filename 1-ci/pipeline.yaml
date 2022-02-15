@@ -1,9 +1,12 @@
+trigger:
+  - app-hypermaster
+
 resources:
   repositories:
     - repository: app
       type: github
       name: nametoread/eschool-sorcery
-      ref: hypermaster
+      ref: app-hypermaster
       endpoint: nametoread
       trigger:
         - hypermaster
