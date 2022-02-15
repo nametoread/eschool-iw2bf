@@ -55,13 +55,6 @@ stages:
                   scriptType: "bash"
                   scriptLocation: "inlineScript"
                   inlineScript: |
-                    ACR_NAME=$(az deployment group show \
-                      --name dep-missionctl-$(Build.BuildNumber) \
-                      --resource-group ${{ parameters.rgName }} \
-                      --query properties.outputs.${{ output }}.value \
-                      --output tsv
-                    )
-
                     VG_ID=$(az pipelines variable-group list \
                       --group-name globalGroup \
                       --query "[].id" \
@@ -72,7 +65,7 @@ stages:
                       --group-id "$VG_ID" \
                       --query "${{ output }}" \
                       --output tsv
-                    )      
+                    )
 
                     VG_ACTION=update
 
@@ -80,9 +73,18 @@ stages:
                       VG_ACTION=create
                     fi
 
+                    OUTPUT=$(az deployment group show \
+                      --name dep-missionctl-$(Build.BuildNumber) \
+                      --resource-group ${{ parameters.rgName }} \
+                      --query properties.outputs.${{ output }}.value \
+                      --output tsv
+                    )
+
+                    echo "OUTPUT=$OUTPUT"
+
                     az pipelines variable-group variable "$VG_ACTION" \
                       --group-id "$VG_ID" \
                       --name ${{ output }} \
-                      --value "$ACR_NAME"
+                      --value "$OUTPUT"
                 env:
                   AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
