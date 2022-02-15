@@ -44,14 +44,13 @@ stages:
                     organization=$(System.TeamFoundationCollectionUri) \
                     project=$(System.TeamProject) \
                   --use-git-aliases true
-          - task: AzureCLI@2
+          - task: AzurePowerShell@5
             name: SaveOutputs
             displayName: Save outputs to global group
             inputs:
               azureSubscription: ${{ parameters.azureConnection }}
-              scriptType: "pscore"
-              scriptLocation: "inlineScript"
-              inlineScript: |
+              ScriptType: "InlineScript"
+              Inline: |
                 $vg_id = az pipelines variable-group list `
                   --group-name globalGroup `
                   --query "[].id" `
@@ -81,5 +80,7 @@ stages:
                       --name "$name" `
                       --value "$value"
                 }
-            env:
+              azurePowerShellVersion: "LatestVersion"
+              pwsh: true
+              env:
               AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)

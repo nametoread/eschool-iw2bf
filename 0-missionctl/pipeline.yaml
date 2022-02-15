@@ -6,7 +6,7 @@ variables:
   - group: missionCtlGroup
 
   - name: file
-    value: $(Build.SourcesDirectory)/templates/missionctl.bicep
+    value: $(Build.SourcesDirectory)/0-missionctl/main.bicep
   - name: params
     value: dnsDomain=$(dnsDomain)
 
@@ -14,7 +14,7 @@ pool:
   vmImage: $(vmImage)
 
 stages:
-  # - template: modules/bicep-validate.yaml
+  # - template: ../modules/bicep-validate.yaml
   #   parameters:
   #     azureConnection: $(azureConnection)
   #     rgName: $(rgName)
@@ -22,7 +22,7 @@ stages:
   #     file: $(file)
   #     params: $(params)
 
-  - template: modules/bicep-deploy.yaml
+  - template: ../modules/bicep-deploy.yaml
     parameters:
       azureConnection: $(azureConnection)
       rgName: $(rgName)

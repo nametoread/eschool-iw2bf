@@ -1,4 +1,4 @@
-# Overview
+# Library
 
 There is one **global group** (named `globalGroup`) with following common variables:
 
