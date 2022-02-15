@@ -10,7 +10,7 @@ variables:
   - name: params
     value: |
       vnName=$(vnName) \
-      dbSubnetAddressIp=$(dbSubnetAddressIp)
+      dbSubnetAddressIp=$(dbSubnetAddressIp) \
       vnAddressSpaceIp=$(vnAddressSpaceIp) \
       dbName=$(dbName) \
       dbAdminLogin=$(dbAdminLogin) \

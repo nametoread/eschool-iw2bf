@@ -23,7 +23,7 @@ stages:
               scriptLocation: "inlineScript"
               inlineScript: |
                 az deployment group create \
-                  --name "dep-missionctl-$(Build.BuildNumber)" \
+                  --name "dep-$(rgName)-$(Build.BuildNumber)" \
                   --resource-group ${{ parameters.rgName }} \
                   --template-file ${{ parameters.file }} \
                   --parameters ${{ parameters.params }}
@@ -51,7 +51,7 @@ stages:
 
                 $deployment = Get-AzResourceGroupDeployment `
                   -ResourceGroupName "${{ parameters.rgName }}" `
-                  -Name "dep-missionctl-$(Build.BuildNumber)"
+                  -Name "dep-$(rgName)-$(Build.BuildNumber)"
 
                 foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
                   $name = $raw_output.Key
