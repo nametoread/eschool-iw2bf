@@ -53,7 +53,7 @@ stages:
                   -ResourceGroupName "${{ parameters.rgName }}" `
                   -Name "dep-${{ parameters.rgName }}-$(Build.BuildNumber)"
 
-                if (![string]::IsNullOrWhiteSpace($deployment)) {
+                if (![string]::IsNullOrWhiteSpace($deployment.Outputs)) {
                   foreach ($raw_output in $deployment.Outputs.GetEnumerator()) {
                     $name = $raw_output.Key
                     $value = $raw_output.Value.Value
