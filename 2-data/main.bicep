@@ -52,7 +52,7 @@ resource dbSubnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
 }
 
 resource dbDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: '${dbName}.mysql.database.azure.com'
+  name: '${dbName}.private.mysql.database.azure.com'
   location: 'global'
 }
 
