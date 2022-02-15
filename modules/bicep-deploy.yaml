@@ -16,7 +16,7 @@ stages:
         steps:
           - task: AzureCLI@2
             name: Deploy
-            displayName: Deploy base infrastructure to Azure
+            displayName: Deploy to Azure
             inputs:
               azureSubscription: ${{ parameters.azureConnection }}
               scriptType: "bash"

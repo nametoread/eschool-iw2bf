@@ -64,7 +64,7 @@ resource dbVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-
     virtualNetwork: {
       id: vnet.id
     }
-    // registrationEnabled: false
+    registrationEnabled: false
   }
 }
 
