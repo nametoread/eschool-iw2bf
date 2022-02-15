@@ -12,6 +12,8 @@ param dbAdminPassword string
 param dbSkuName string = 'Standard_B1ms'
 param dbSkuTier string = 'Burstable'
 
+param kvName string
+
 resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: vnName
   location: location
@@ -54,7 +56,8 @@ resource dbDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 }
 
 resource dbVnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
-  name: '${dbDnsZone.name}/${uniqueString(vnet.id)}'
+  parent: dbDnsZone
+  name: 'mysqlDbLink'
   location: 'global'
   properties: {
     virtualNetwork: {
