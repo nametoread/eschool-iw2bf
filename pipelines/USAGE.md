@@ -14,3 +14,7 @@ Also for each pipeline **separate group** should be created (lookup name in modu
 - _Description:_ Creation of base infrastructure (DNS Zone, Container Registry).
 - _Group:_ `missionCtlGroup`
   - `dnsDomain` - domain name for DNS Zone
+
+# Notes
+
+`bicep-deploy` module require **Administrator** role in `globalGroup`
