@@ -17,24 +17,26 @@ variables:
 pool:
   vmImage: $(vmImage)
 
-steps:
-  - checkout: self
-  - checkout: app
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: "$(azureConnection)"
-      scriptType: "bash"
-      scriptLocation: "inlineScript"
-      inlineScript: |
-        IMAGE='eschool'
-        TAG=$(Build.BuildNumber)
+jobs:
+  - job: BuildToAcr
+    displayName: Build & push to ACR
+    steps:
+      - checkout: self
+      - checkout: app
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: "$(azureConnection)"
+          scriptType: "bash"
+          scriptLocation: "inlineScript"
+          inlineScript: |
+            IMAGE='eschool'
+            TAG=$(Build.BuildNumber)
 
-        az acr build \
-          --resource-group $(crRg) \
-          --registry $(crName) \
-          --image ${IMAGE}:${TAG} .
-
-        echo 'DONT FORGET TO REASIGN latest TAG'
-      addSpnToEnvironment: true
-      useGlobalConfig: true
-      workingDirectory: "eschool-sorcery"
+            az acr build \
+              --resource-group $(crRg) \
+              --registry $(crName) \
+              --image ${IMAGE}:${TAG} \
+              --image ${IMAGE}:latest .
+          addSpnToEnvironment: true
+          useGlobalConfig: true
+          workingDirectory: "eschool-sorcery"
