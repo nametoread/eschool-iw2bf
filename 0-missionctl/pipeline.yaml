@@ -9,8 +9,6 @@ variables:
     value: $(Build.SourcesDirectory)/0-missionctl/main.bicep
   - name: params
     value: |
-      vnName=$(vnName) \
-      vnAddressSpaceIp=$(vnAddressSpaceIp) \
       dnsDomain=$(dnsDomain)
 
 pool:
